@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Movies_D3</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body>
+
+<h1>Bar Chart Bilheteria</h1>
+<div id="barchartbilheteria"></div>
+
+<h1>Bar Chart Orçamento</h1>
+<div id="barchartorcamento"></div>
+
+<h1>Bar Chart Lucro</h1>
+<div id="barchartlucro"></div>
+
+<h1>Vendas de Bilheteria por gênero</h1>
+<div id="barchartbilhgenero"></div>
+
+<script type="text/javascript">
+    function render(data, selector, comparator, prop, label = null, bg_color) {
+        let max_value = Math.max.apply(Math, data.map(o => o[prop]))
+        let prop_to_perc = v => v*100
+        if(label == null)
+            label = prop
+        d3.select(selector).selectAll(selector+" div.h-bar")
+            .data(data)
+            .enter().append("div")
+            .attr("class", "h-bar")
+            .style("background-color", bg_color)
+            .append("span")
+        
+        d3.select(selector).selectAll(selector + " div.h-bar")
+            .data(data)
+            .attr("class", "h-bar")
+            .style("width", d => prop_to_perc(d[prop] / max_value) + "%")
+            .select("span")
+            .text(d =>d[label])
+        if(comparator)
+            d3.select("body")
+                .selectAll(selector + " div.h-bar") 
+                .sort(comparator);
+    }
+    let compareByGross = function (a, b) { 
+        return b.Worldwide_Gross_M - a.Worldwide_Gross_M
+    }
+    let compareByBudget = function (a, b) { 
+        return b.Budget_M - a.Budget_M
+    }
+    let compareByProfit = function (a, b) { 
+        return b.profit - a.profit
+    }
+    let compareByGrossGenre = function (a, b) { 
+        return b.gross - a.gross
+    }
+    
+    d3.json("data/movies.json").then(function(json){ 
+        render(json, "#barchartbilheteria", compareByGross, "Worldwide_Gross_M", "Film", "rgb(230,159,0)")
+        render(json, "#barchartorcamento", compareByBudget, "Budget_M", "Film", "rgb(86,180,233)")
+        json.forEach(r => r.profit = r.Worldwide_Gross_M - r.Budget_M)
+        render(json, "#barchartlucro", compareByProfit, "profit", "Film", "rgb(0,158,115)")
+        by_genre = []
+        json.forEach(r => {
+            if(!by_genre.some(e => e.name == r.Genre)) {
+                gen = {}
+                gen.name = r.Genre
+                gen.gross = r.Worldwide_Gross_M
+                by_genre.push(gen)
+            } else {
+                gen = by_genre.find(o => o.name == r.Genre)
+                gen.gross += r.Worldwide_Gross_M
+            }
+        })
+        console.log(by_genre)
+        render(by_genre, "#barchartbilhgenero", compareByGrossGenre, "gross", "name", "rgb(213,94,0)")
+    });
+</script>
+</body>
+</html>

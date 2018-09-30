@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Crossfilter Filmes</title>
+    <link rel="stylesheet" href="css/dc.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/crossfilter.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/dc.min.js"></script>
+
+</head>
+<body>
+     <div>
+        <div id="anochart">
+		<h1>Bilheteria arrecadada</h1>
+        <h3>por ano</h3>		
+		</div>
+		<div id="generochart">
+		<h1>Bilheteria arrecadada</h1>
+        <h3>por gênero de filme</h3>
+		
+		</div>
+    </div>
+    <script type="text/javascript">
+	
+		let anoChart = dc.barChart('#anochart');
+		let generoChart = dc.barChart('#generochart');
+
+
+        d3.json("data/movies.json").then(function(data){
+		
+            //criando um crossfilter
+            let facts = crossfilter(data);
+
+            let date = facts.dimension(function(d){
+                return d.Year;
+            });
+			
+            let bilheteriaAnoGrupo = date.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+			
+			let genero = facts.dimension(function(d){
+                return d.Genre;
+            });
+			
+            let bilheteriaGeneroGrupo = genero.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+			
+            anoChart.width(500)
+                     .height(400)
+                     .margins({top: 50, right: 50, bottom: 40, left: 50})
+                     .dimension(date)
+                     .x(d3.scaleBand())
+                     .xUnits(dc.units.ordinal)
+					 .xAxisLabel("Ano")
+                     .yAxisLabel("Bilheteria")
+                     .renderHorizontalGridLines(true)
+                     .brushOn(false)
+					 .group(bilheteriaAnoGrupo)
+                     .ordinalColors(['orange']);
+			
+			generoChart.width(700)
+                     .height(400)
+                     .margins({top: 50, right: 50, bottom: 40, left: 50})
+                     .dimension(genero)
+                     .x(d3.scaleBand())
+                     .xUnits(dc.units.ordinal)
+					 .xAxisLabel("Genero")
+                     .yAxisLabel("Bilheteria")
+                     .renderHorizontalGridLines(true)
+                     .brushOn(false)
+					 .group(bilheteriaGeneroGrupo)
+                     .ordinalColors(['blue']);
+                    
+            dc.renderAll();
+
+        });
+    </script>           
+</body>
+</html>
