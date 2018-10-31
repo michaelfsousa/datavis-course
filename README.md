@@ -34,9 +34,20 @@
 [acoes.html](d3_crossfilter/acoes.html)<br>
 [movies_d3_dc.html](d3_crossfilter/movies_d3_dc.html)<br>
 
-## Aula do dia 24/09/2018
+## Aula do dia 30/09/2018
 
 [earthquakes.html](d3_crossfilter_2/earthquakes.html)<br>
+
+## Aula do dia 03/10/2018
+[chicago.html] (d3_chicago/chicago.html)<br>
+
+## Aula do dia 10/10/2018
+[songs.html] (d3_networks_trees/songs.html)<br>
+[lesmiserables.html] (d3_networks_trees/lesmiserables.html)<br>
+
+##Aula do dia 22/10/2018
+[crimes.html] (d3_color/crimes.html)<br>
+[usa.html] (d3_color/usa.html)<br>
 
 ---
 
