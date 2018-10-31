@@ -47,7 +47,7 @@
 [songs.html](d3_networks_trees/songs.html)<br>
 [lesmiserables.html](d3_networks_trees/lesmiserables.html)<br>
 
-##Aula do dia 22/10/2018
+## Aula do dia 22/10/2018
 
 [crimes.html](d3_color/crimes.html)<br>
 [usa.html](d3_color/usa.html)<br>
