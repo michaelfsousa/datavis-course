@@ -54,7 +54,7 @@
 
 ## Aula do dia 31/10/2018
 [usa.html](d3_interactive/usa.html)<br>
-[earthquakes.html](d3.interactive/earthquakes.html)<br>
+[earthquakes.html](d3_interactive/earthquakes.html)<br>
 
 ---
 
